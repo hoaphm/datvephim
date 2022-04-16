@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
-
-export default class HangGhe extends Component {
+import { connect } from "react-redux";
+class HangGhe extends Component {
 	renderGhe = () => {
 		return this.props.hangGhe.danhSachGhe.map((ghe, index) => {
 			let cssGheDaDat = "";
@@ -9,10 +9,20 @@ export default class HangGhe extends Component {
 				cssGheDaDat = "gheDuocChon";
 				disabled = true;
 			}
+			let cssGheDangDat = "";
+			let indexGheDangDat = this.props.danhSachGheDangDat.findIndex(
+				(gheDangDat) => gheDangDat.soGhe === ghe.soGhe
+			);
+			if (indexGheDangDat !== -1) {
+				cssGheDangDat = "gheDangChon";
+			}
 			return (
 				<button
+					onClick={() => {
+						this.props.datGhe(ghe);
+					}}
 					disabled={disabled}
-					className={` ${cssGheDaDat} ghe`}
+					className={`ghe ${cssGheDaDat} ${cssGheDangDat} `}
 					key={{ index }}>
 					{ghe.soGhe}
 				</button>
@@ -49,3 +59,19 @@ export default class HangGhe extends Component {
 		);
 	}
 }
+const mapStateToProps = (state) => {
+	return {
+		danhSachGheDangDat: state.DatVePhimReducer.danhSachGheDangDat,
+	};
+};
+const mapDispatchToProps = (dispatch) => {
+	return {
+		datGhe: (ghe) => {
+			dispatch({
+				type: "DAT_GHE",
+				ghe,
+			});
+		},
+	};
+};
+export default connect(mapStateToProps, mapDispatchToProps)(HangGhe);
