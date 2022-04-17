@@ -1,5 +1,6 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
+import { datGheAction } from "../redux/actions/DatVePhimAction";
 class HangGhe extends Component {
 	renderGhe = () => {
 		return this.props.hangGhe.danhSachGhe.map((ghe, index) => {
@@ -43,9 +44,9 @@ class HangGhe extends Component {
 			);
 		} else {
 			return (
-				<Fragment>
+				<div>
 					{this.props.hangGhe.hang} {this.renderGhe()}
-				</Fragment>
+				</div>
 			);
 		}
 	};
@@ -67,10 +68,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		datGhe: (ghe) => {
-			dispatch({
-				type: "DAT_GHE",
-				ghe,
-			});
+			dispatch(datGheAction(ghe));
 		},
 	};
 };
